@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ميزان | المساعد القانوني العُماني</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d14; --surface:#131724; --surface2:#1a2035; --card:#1e2640;
+  --border:#252d44; --primary:#1a3a6b; --primary-l:#2451a0;
+  --gold:#c9a84c; --gold-bg:rgba(201,168,76,.11); --gold-border:rgba(201,168,76,.3);
+  --text:#e2dcd0; --text-dim:#7d8ba3; --text-muted:#3d4a65;
+  --ok:#2a8055; --ok-bg:rgba(42,128,85,.14); --warn:#b8760f; --warn-bg:rgba(184,118,15,.13);
+  --r:10px; --r-sm:6px; --sidebar:228px; --topbar:58px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Cairo',system-ui,sans-serif;font-size:14px;direction:rtl;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted);}
+
+/* ── Screens ── */
+.screen{display:none;}
+.screen.active{display:flex;}
+
+/* ══════════════════════════════════
+   LOGIN
+══════════════════════════════════ */
+#login-screen{
+  align-items:center;justify-content:center;min-height:100vh;flex-direction:column;
+  background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(26,58,107,.5) 0%,var(--bg) 65%);
+}
+.login-wrap{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:48px 44px;width:390px;}
+.brand-mark{text-align:center;margin-bottom:36px;}
+.brand-logo{font-size:34px;font-weight:900;color:var(--gold);letter-spacing:-1px;}
+.brand-sub{font-size:12px;color:var(--text-dim);margin-top:4px;}
+.ff{margin-bottom:14px;}
+.ff label{display:block;font-size:11px;color:var(--text-dim);font-weight:600;margin-bottom:5px;}
+.ff input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;outline:none;transition:border-color .18s,box-shadow .18s;}
+.ff input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-bg);}
+.btn-gold{width:100%;background:var(--gold);color:#0b0d14;border:none;border-radius:var(--r-sm);padding:12px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;transition:opacity .18s;}
+.btn-gold:hover{opacity:.88;}
+.login-links{margin-top:20px;text-align:center;font-size:12px;color:var(--text-dim);}
+.login-links a{color:var(--gold);text-decoration:none;font-weight:600;}
+.login-trust{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);text-align:center;line-height:2;}
+
+/* ══════════════════════════════════
+   APP SHELL
+══════════════════════════════════ */
+#app-screen{flex-direction:column;min-height:100vh;}
+
+/* Topbar */
+.topbar{position:fixed;top:0;right:0;left:0;height:var(--topbar);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:14px;z-index:200;}
+.topbar-logo{font-size:20px;font-weight:900;color:var(--gold);white-space:nowrap;}
+.topbar-search{flex:1;max-width:520px;position:relative;}
+.topbar-search input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:22px;padding:8px 18px 8px 40px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:border-color .18s,box-shadow .18s;}
+.topbar-search input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-bg);}
+.topbar-search input::placeholder{color:var(--text-muted);}
+.ts-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:15px;pointer-events:none;}
+.topbar-end{display:flex;align-items:center;gap:12px;}
+.streak{background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;}
+.time-saved{font-size:11px;color:var(--text-dim);white-space:nowrap;}
+.time-saved b{color:#4ecb8a;font-weight:700;}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;flex-shrink:0;}
+
+/* Sidebar */
+.sidebar{position:fixed;top:var(--topbar);right:0;width:var(--sidebar);height:calc(100vh - var(--topbar));background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:12px 0 16px;z-index:150;overflow-y:auto;}
+.nav-group{padding:0 10px;margin-bottom:2px;}
+.nav-lbl{font-size:9.5px;color:var(--text-muted);font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:8px 10px 4px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;color:var(--text-dim);font-size:12.5px;font-weight:500;transition:background .14s,color .14s;margin-bottom:1px;position:relative;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:var(--gold-bg);color:var(--gold);}
+.nav-item.active::before{content:'';position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--gold);border-radius:2px 0 0 2px;}
+.ni-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+.ni-badge{margin-inline-start:auto;background:var(--primary-l);color:var(--text);font-size:9px;padding:1px 6px;border-radius:10px;font-weight:700;}
+.ni-badge.new{background:var(--warn);color:#0b0d14;}
+.nav-div{border:none;border-top:1px solid var(--border);margin:8px 16px;}
+.trial-box{margin:auto 10px 0;background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:var(--r-sm);padding:12px 14px;}
+.trial-box strong{font-size:12px;color:var(--gold);}
+.trial-box p{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.trial-box a{font-size:11px;color:var(--gold);font-weight:700;text-decoration:none;}
+
+/* Main — normal mode */
+.main{margin-top:var(--topbar);margin-right:var(--sidebar);min-height:calc(100vh - var(--topbar));}
+.main-padded{padding:28px 32px;}
+
+/* Tabs */
+.tab{display:none;}
+.tab.active{display:block;}
+
+/* ══════════════════════════════════
+   SHARED BUTTONS
+══════════════════════════════════ */
+.btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 14px;font-family:'Cairo',sans-serif;font-size:12px;color:var(--text-dim);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn:hover{border-color:var(--gold-border);color:var(--gold);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn.primary{background:var(--gold);color:#0b0d14;border-color:var(--gold);font-weight:700;}
+.btn.primary:hover{opacity:.88;}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--text-dim);}
+.btn.ghost:hover{background:var(--surface2);border-color:var(--border);color:var(--text);}
+
+/* ══════════════════════════════════
+   SPLIT-SCREEN LAYOUT
+══════════════════════════════════ */
+.split-layout{
+  display:grid;
+  grid-template-columns:35fr 65fr; /* RTL: col1→RIGHT(agent 35%), col2→LEFT(content 65%) */
+  height:calc(100vh - var(--topbar));
+  overflow:hidden;
+}
+
+/* Agent/Wizard panel — RIGHT side (35%) */
+.agent-pane{
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100%;overflow:hidden;
+}
+.agent-pane-header{
+  padding:16px 18px;border-bottom:1px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;gap:10px;
+}
+.agent-avatar{
+  width:32px;height:32px;border-radius:50%;background:var(--primary);
+  border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.agent-title{font-size:13px;font-weight:700;color:var(--text);}
+.agent-sub{font-size:11px;color:var(--text-muted);}
+
+/* Step progress bar */
+.step-progress{padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.step-labels{display:flex;justify-content:space-between;margin-bottom:8px;}
+.step-lbl{font-size:10px;color:var(--text-muted);text-align:center;flex:1;}
+.step-lbl.done{color:var(--ok);}
+.step-lbl.now{color:var(--gold);font-weight:700;}
+.step-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;position:relative;}
+.step-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease;}
+
+/* Chat messages in agent panel */
+.chat-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
+.msg{display:flex;gap:8px;align-items:flex-start;}
+.msg.ai .msg-bubble{background:var(--surface2);border:1px solid var(--border);border-radius:12px 12px 12px 2px;padding:12px 14px;font-size:12.5px;color:var(--text);line-height:1.7;flex:1;}
+.msg.user .msg-bubble{background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:12px 12px 2px 12px;padding:12px 14px;font-size:12.5px;color:var(--text);line-height:1.7;flex:1;}
+.msg-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px;}
+.msg-icon.ai{background:var(--primary);border:1px solid var(--primary-l);}
+.msg-icon.user{background:var(--surface2);border:1px solid var(--border);}
+
+/* Quick choice chips in chat */
+.quick-choices{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.qc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:5px 12px;font-size:11.5px;color:var(--text-dim);cursor:pointer;transition:all .14s;font-family:'Cairo',sans-serif;}
+.qc:hover,.qc.sel{background:var(--gold-bg);border-color:var(--gold-border);color:var(--gold);}
+
+/* Input area at bottom of agent panel */
+.agent-input{padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;}
+.agent-input-row{display:flex;gap:8px;align-items:flex-end;}
+.agent-input textarea{
+  flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:9px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:12.5px;
+  outline:none;resize:none;min-height:38px;max-height:100px;direction:rtl;
+  transition:border-color .18s;line-height:1.5;
+}
+.agent-input textarea:focus{border-color:var(--gold);}
+.agent-input textarea::placeholder{color:var(--text-muted);}
+.send-btn{
+  width:36px;height:36px;background:var(--gold);border:none;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  font-size:16px;transition:opacity .15s;
+}
+.send-btn:hover{opacity:.88;}
+
+/* Tone selector */
+.tone-selector{display:flex;flex-direction:column;gap:6px;}
+.tone-opt{
+  display:flex;flex-direction:column;padding:10px 12px;border-radius:var(--r-sm);
+  border:1px solid var(--border);cursor:pointer;transition:all .15s;
+  background:var(--surface2);
+}
+.tone-opt:hover{border-color:var(--gold-border);background:var(--gold-bg);}
+.tone-opt.sel{border-color:var(--gold);background:var(--gold-bg);}
+.tone-name{font-size:12px;font-weight:700;color:var(--text);}
+.tone-desc{font-size:10.5px;color:var(--text-dim);margin-top:2px;}
+
+/* ══════════════════════════════════
+   CONTENT PANEL (65% LEFT)
+══════════════════════════════════ */
+.content-pane{
+  display:flex;flex-direction:column;
+  height:100%;overflow:hidden;background:var(--bg);
+}
+
+/* Sticky content toolbar */
+.content-toolbar{
+  padding:10px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+  background:var(--surface);
+}
+.content-toolbar-title{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+
+/* Content scroll area */
+.content-scroll{flex:1;overflow-y:auto;padding:22px 28px;}
+
+/* ══════════════════════════════════
+   SEARCH INITIAL STATE
+══════════════════════════════════ */
+.search-hero{text-align:center;padding:44px 0 32px;}
+.search-hero h1{font-size:24px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.search-hero p{font-size:13px;color:var(--text-dim);}
+.hero-bar{max-width:600px;margin:22px auto 0;position:relative;}
+.hero-bar input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:28px;padding:14px 22px 14px 52px;color:var(--text);font-family:'Cairo',sans-serif;font-size:15px;outline:none;transition:border-color .18s,box-shadow .18s;}
+.hero-bar input:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-bg);}
+.hero-bar input::placeholder{color:var(--text-muted);}
+.hero-bar .hb-btn{position:absolute;left:7px;top:50%;transform:translateY(-50%);background:var(--gold);color:#0b0d14;border:none;border-radius:22px;padding:8px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.hero-bar .hb-btn:hover{opacity:.88;}
+.search-chips{display:flex;gap:7px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.chip{background:var(--surface2);border:1px solid var(--border);border-radius:18px;padding:5px 14px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:all .15s;font-family:'Cairo',sans-serif;}
+.chip:hover{border-color:var(--gold);color:var(--gold);}
+.stats-row{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap;}
+.stat-c{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 18px;font-size:11.5px;color:var(--text-dim);}
+.stat-c b{color:var(--gold);font-size:15px;display:block;font-weight:700;}
+.sec{margin-top:28px;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-title{font-size:13.5px;font-weight:700;color:var(--text);}
+.sec-act{font-size:11px;color:var(--gold);cursor:pointer;}
+.recent-list{display:flex;flex-direction:column;gap:6px;}
+.rrow{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);cursor:pointer;transition:background .14s,border-color .14s;}
+.rrow:hover{background:var(--surface2);border-color:var(--gold-border);}
+.rrow .rt{flex:1;font-size:12.5px;color:var(--text);}
+.rrow .rm{font-size:10.5px;color:var(--text-muted);}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px;}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 14px;text-align:center;cursor:pointer;transition:all .18s;}
+.cat-card:hover{border-color:var(--gold);background:var(--gold-bg);transform:translateY(-2px);}
+.cat-icon{font-size:28px;margin-bottom:8px;}
+.cat-name{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.cat-n{font-size:10.5px;color:var(--text-muted);}
+
+/* Search loading */
+#search-loading{display:none;text-align:center;padding:60px 0;}
+.load-anim{font-size:42px;animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(.95);}50%{opacity:1;transform:scale(1.05);}}
+.load-steps{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:18px;}
+.ls{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:6px;transition:color .3s;}
+.ls.done{color:var(--ok);}
+.ls.now{color:var(--gold);}
+
+/* ══════════════════════════════════
+   SEARCH RESULTS — SPLIT SCREEN
+══════════════════════════════════ */
+/* Uses .split-layout + .agent-pane + .content-pane */
+
+/* AI summary */
+.ai-card{background:linear-gradient(135deg,rgba(26,58,107,.28) 0%,rgba(201,168,76,.05) 100%);border:1px solid var(--primary-l);border-radius:var(--r);padding:16px 20px;margin-bottom:14px;}
+.ai-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ai-tag{background:var(--primary-l);color:var(--gold);font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.6px;}
+.ai-title{font-size:12.5px;font-weight:700;color:var(--text);}
+.ai-body{font-size:12.5px;color:var(--text);line-height:1.9;}
+.ai-refs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.ai-ref{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:10.5px;color:var(--gold);cursor:pointer;}
+.ai-ref:hover{border-color:var(--gold);}
+
+/* Result cards */
+.res-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:9px;transition:border-color .15s;}
+.res-card:hover{border-color:var(--gold-border);}
+.res-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.res-src{font-size:11.5px;font-weight:700;color:var(--gold);}
+.res-art{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.sbadge{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:5px;flex-shrink:0;}
+.sbadge.ok{background:var(--ok-bg);color:#5dc995;}
+.sbadge.warn{background:var(--warn-bg);color:#e0a840;}
+.res-body{font-size:12.5px;color:var(--text);line-height:1.9;}
+.res-body mark{background:rgba(201,168,76,.2);color:var(--gold);border-radius:2px;padding:0 2px;}
+.res-acts{display:flex;gap:7px;margin-top:12px;}
+.rel-bar{height:2px;background:var(--border);border-radius:2px;margin-top:12px;overflow:hidden;}
+.rel-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),#e0c060);}
+
+/* Filter row */
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.ftab{padding:4px 13px;border-radius:16px;font-size:11.5px;cursor:pointer;border:1px solid var(--border);color:var(--text-dim);background:var(--surface);transition:all .14s;font-family:'Cairo',sans-serif;}
+.ftab.active{background:var(--primary);border-color:var(--primary-l);color:var(--text);}
+.ftab:hover:not(.active){border-color:var(--gold-border);color:var(--gold);}
+
+/* ══════════════════════════════════
+   DOCUMENT EDITOR (in draft split)
+══════════════════════════════════ */
+.doc-body{padding:28px 40px 40px;font-size:13.5px;line-height:2.2;color:var(--text);}
+.doc-main-title{text-align:center;font-size:18px;font-weight:900;color:var(--gold);margin-bottom:6px;}
+.doc-main-sub{text-align:center;font-size:11.5px;color:var(--text-dim);margin-bottom:28px;}
+.doc-sec{font-size:13.5px;font-weight:800;color:var(--text);margin:22px 0 8px;border-inline-end:3px solid var(--gold);padding-inline-end:10px;}
+.doc-p{margin-bottom:14px;line-height:2.2;}
+
+/* Golden variable tags (unfilled fields) */
+.var-tag{
+  display:inline-block;background:rgba(201,168,76,.15);color:var(--gold);
+  border:1px dashed var(--gold);border-radius:4px;
+  padding:1px 8px;font-size:12px;cursor:pointer;margin:0 2px;
+  transition:all .15s;font-weight:600;
+}
+.var-tag:hover{background:rgba(201,168,76,.28);border-style:solid;}
+.var-tag.filled{
+  background:rgba(42,128,85,.12);color:#5dc995;
+  border:1px solid rgba(42,128,85,.3);font-style:normal;
+}
+
+/* Quick actions floating bar */
+.quick-actions{
+  padding:10px 22px;border-top:1px solid var(--border);
+  display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;
+  background:var(--surface);
+}
+.qa-btn{
+  display:flex;align-items:center;gap:5px;padding:5px 12px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:16px;
+  font-family:'Cairo',sans-serif;font-size:11.5px;color:var(--text-dim);
+  cursor:pointer;transition:all .15s;
+}
+.qa-btn:hover{border-color:var(--gold-border);color:var(--gold);}
+
+/* Export modal overlay */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;width:380px;}
+.modal h3{font-size:16px;font-weight:800;color:var(--text);margin-bottom:18px;}
+.export-option{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:8px;cursor:pointer;transition:all .15s;}
+.export-option:hover{border-color:var(--gold-border);background:var(--gold-bg);}
+.export-option.sel{border-color:var(--gold);background:var(--gold-bg);}
+.eo-icon{font-size:24px;flex-shrink:0;}
+.eo-name{font-size:13px;font-weight:700;color:var(--text);}
+.eo-desc{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.checkbox-row{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:12px;color:var(--text-dim);cursor:pointer;}
+.cb{width:16px;height:16px;border:1.5px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);}
+.modal-footer{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;}
+
+/* Fill variable modal */
+.var-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;align-items:center;justify-content:center;}
+.var-modal.open{display:flex;}
+.var-modal-inner{background:var(--surface);border:1px solid var(--gold-border);border-radius:12px;padding:22px 26px;width:340px;}
+.var-modal-inner h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.var-modal-inner input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;margin-bottom:12px;}
+.var-modal-inner input:focus{border-color:var(--gold);}
+.var-footer{display:flex;gap:8px;justify-content:flex-end;}
+
+/* ══════════════════════════════════
+   FILES / CASES
+══════════════════════════════════ */
+.files-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+.file-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;transition:all .18s;}
+.file-card:hover{border-color:var(--gold-border);transform:translateY(-2px);}
+.file-icon{font-size:30px;margin-bottom:11px;}
+.file-name{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.file-meta{font-size:10.5px;color:var(--text-muted);}
+.fbadge{display:inline-block;margin-top:10px;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
+.fbadge.draft{background:var(--gold-bg);color:var(--gold);}
+.fbadge.search{background:var(--ok-bg);color:#5dc995;}
+.case-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:10px;}
+.case-name{font-size:13.5px;font-weight:700;color:var(--text);}
+.case-info{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.case-acts{display:flex;gap:7px;margin-top:12px;}
+.case-meta{font-size:11px;color:var(--text-dim);margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:20px;}
+.case-meta span b{color:var(--text);}
+
+/* ══════════════════════════════════
+   SOON
+══════════════════════════════════ */
+.soon{text-align:center;padding:80px 20px;}
+.soon .si{font-size:46px;margin-bottom:14px;}
+.soon h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.soon p{font-size:12.5px;color:var(--text-dim);max-width:340px;margin:0 auto 22px;}
+
+/* ══════════════════════════════════
+   TOAST
+══════════════════════════════════ */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:11px 20px;font-size:12.5px;color:var(--text);z-index:1000;transition:transform .28s cubic-bezier(.34,1.56,.64,1);box-shadow:0 10px 40px rgba(0,0,0,.5);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:900px){
+  .split-layout{grid-template-columns:1fr;}
+  .agent-pane{display:none;}
+  .cat-grid{grid-template-columns:repeat(2,1fr);}
+  .files-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Export Modal -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal">
+    <h3>تصدير المستند</h3>
+    <div class="export-option sel" id="eo1" onclick="selExport(this)">
+      <span class="eo-icon">📄</span>
+      <div><div class="eo-name">Word — قابل للتعديل</div><div class="eo-desc">صيغة .docx جاهزة للتعديل في Microsoft Word</div></div>
+    </div>
+    <div class="export-option" id="eo2" onclick="selExport(this)">
+      <span class="eo-icon">📋</span>
+      <div><div class="eo-name">PDF مسوّدة — غير رسمي</div><div class="eo-desc">بدون ختم، للمراجعة الداخلية</div></div>
+    </div>
+    <div class="export-option" id="eo3" onclick="selExport(this)">
+      <span class="eo-icon">✅</span>
+      <div><div class="eo-name">PDF رسمي — جاهز للتقديم</div><div class="eo-desc">مع ختم وتوقيع، جاهز للمحكمة</div></div>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">خيارات إضافية</div>
+      <label class="checkbox-row"><span class="cb" id="cb1" onclick="toggleCb('cb1')"></span>تضمين أرقام المواد القانونية</label>
+      <label class="checkbox-row"><span class="cb" id="cb2" onclick="toggleCb('cb2')"></span>إضافة تذييل الصفحة مع اسم المحامي</label>
+      <label class="checkbox-row"><span class="cb" id="cb3" onclick="toggleCb('cb3')"></span>إضافة صفحة الخاتمة القانونية</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('export-modal')">إلغاء</button>
+      <button class="btn primary" onclick="closeModal('export-modal');toast('⬇️ جارٍ التصدير…')">تصدير الآن</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variable fill modal -->
+<div class="var-modal" id="var-modal">
+  <div class="var-modal-inner">
+    <h4 id="var-modal-label">أدخل القيمة:</h4>
+    <input type="text" id="var-modal-input" placeholder="اكتب هنا…">
+    <div class="var-footer">
+      <button class="btn" onclick="closeModal('var-modal')">إلغاء</button>
+      <button class="btn primary" onclick="fillVar()">تأكيد وإدراج</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     LOGIN
+═══════════════════════════════════ -->
+<div id="login-screen" class="screen active">
+  <div class="login-wrap">
+    <div class="brand-mark">
+      <div class="brand-logo">⚖️ ميزان</div>
+      <div class="brand-sub">المساعد القانوني العُماني بالذكاء الاصطناعي</div>
+    </div>
+    <div class="ff"><label>البريد الإلكتروني</label><input type="email" placeholder="ahmed@lawfirm.om" dir="ltr"></div>
+    <div class="ff"><label>كلمة المرور</label><input type="password" placeholder="••••••••" dir="ltr"></div>
+    <button class="btn-gold" onclick="goApp()">تسجيل الدخول</button>
+    <div class="login-links"><a href="#" onclick="goApp();return false;">← جرّب مجاناً لمدة ١٤ يوماً · بدون بطاقة ائتمان</a></div>
+    <div class="login-trust">🔒 البيانات محمية داخل السحابة العُمانية Otech<br>متوافق مع قانون PDPL 2022 · تشفير AES-256</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     APP
+═══════════════════════════════════ -->
+<div id="app-screen" class="screen">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-logo">⚖️ ميزان</div>
+    <div class="topbar-search">
+      <span class="ts-icon">🔍</span>
+      <input type="text" id="tb-input" placeholder="ابحث في القانون العُماني…" onkeydown="if(event.key==='Enter')doSearch(this.value)">
+    </div>
+    <div class="topbar-end">
+      <span class="streak">🔥 ٥ أيام متتالية</span>
+      <span class="time-saved">وفّرت اليوم: <b>٤٧ دقيقة</b></span>
+      <div class="avatar">أح</div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-group">
+      <div class="nav-lbl">الرئيسية</div>
+      <div class="nav-item active" data-tab="search" onclick="goTab(this)"><span class="ni-icon">🔍</span>البحث القانوني</div>
+      <div class="nav-item" data-tab="draft" onclick="goTab(this)"><span class="ni-icon">📝</span>صياغة الوثائق</div>
+    </div>
+    <hr class="nav-div">
+    <div class="nav-group">
+      <div class="nav-lbl">مكتبتي</div>
+      <div class="nav-item" data-tab="files" onclick="goTab(this)"><span class="ni-icon">📁</span>ملفاتي المحفوظة<span class="ni-badge">23</span></div>
+      <div class="nav-item" data-tab="cases" onclick="goTab(this)"><span class="ni-icon">⚖️</span>قضاياي النشطة<span class="ni-badge">6</span></div>
+    </div>
+    <hr class="nav-div">
+    <div class="nav-group">
+      <div class="nav-lbl">أدوات</div>
+      <div class="nav-item" data-tab="analyze" onclick="goTab(this)"><span class="ni-icon">🔬</span>تحليل العقود<span class="ni-badge new">جديد</span></div>
+      <div class="nav-item" data-tab="deadlines" onclick="goTab(this)"><span class="ni-icon">📅</span>مواعيد التقاضي</div>
+    </div>
+    <hr class="nav-div">
+    <div class="nav-group">
+      <div class="nav-item" data-tab="settings" onclick="goTab(this)"><span class="ni-icon">⚙️</span>الإعدادات</div>
+    </div>
+    <div class="trial-box">
+      <strong>تجربة مجانية</strong>
+      <p>١٠ أيام متبقية من ١٤</p>
+      <a href="#">ترقية الخطة ←</a>
+    </div>
+  </nav>
+
+  <!-- ─── Main ─── -->
+  <div class="main">
+
+    <!-- ══════════════════════
+         SEARCH TAB
+    ══════════════════════ -->
+    <div id="tab-search" class="tab active">
+
+      <!-- Initial state — full padded -->
+      <div id="s-initial" class="main-padded">
+        <div class="search-hero">
+          <h1>ما الذي تبحث عنه اليوم؟</h1>
+          <p>البحث الفوري في ٢٣٤١ نص قانوني عُماني مُحدَّث · ذكاء اصطناعي مدرَّب على القانون العُماني</p>
+          <div class="hero-bar">
+            <input id="hero-input" type="text" placeholder="مثال: ما هي حقوق العامل في حالة الفصل التعسفي؟…" onkeydown="if(event.key==='Enter')doSearch(this.value)">
+            <button class="hb-btn" onclick="doSearch(document.getElementById('hero-input').value)">بحث ←</button>
+          </div>
+          <div class="search-chips">
+            <span class="chip" onclick="doSearch('عقد العمل وحقوق الموظف')">عقد العمل</span>
+            <span class="chip" onclick="doSearch('إنهاء الخدمة والتعويض')">إنهاء الخدمة</span>
+            <span class="chip" onclick="doSearch('تأسيس الشركات في عُمان')">تأسيس الشركات</span>
+            <span class="chip" onclick="doSearch('التحكيم التجاري')">التحكيم التجاري</span>
+            <span class="chip" onclick="doSearch('عقوبة الغش التجاري')">الغش التجاري</span>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-c"><b>٢٣</b>بحث محفوظ</div>
+          <div class="stat-c"><b>١٢</b>وثيقة مسوَّدة</div>
+          <div class="stat-c"><b>٤.٣ ساعة</b>وُفِّرت هذا الشهر</div>
+          <div class="stat-c"><b>٢٣٤١</b>نص قانوني</div>
+        </div>
+        <div class="sec">
+          <div class="sec-hd"><span class="sec-title">آخر عمليات البحث</span><span class="sec-act">مسح الكل</span></div>
+          <div class="recent-list">
+            <div class="rrow" onclick="doSearch('التزامات صاحب العمل في قانون العمل')"><span style="color:var(--text-muted);font-size:13px;">🕐</span><span class="rt">التزامات صاحب العمل في قانون العمل العُماني</span><span class="rm">منذ ساعتين</span></div>
+            <div class="rrow" onclick="doSearch('شروط تسجيل الشركة ذات المسؤولية المحدودة')"><span style="color:var(--text-muted);font-size:13px;">🕐</span><span class="rt">شروط تسجيل الشركة ذات المسؤولية المحدودة</span><span class="rm">أمس</span></div>
+            <div class="rrow" onclick="doSearch('التحكيم التجاري في سلطنة عُمان')"><span style="color:var(--text-muted);font-size:13px;">🕐</span><span class="rt">التحكيم التجاري في سلطنة عُمان</span><span class="rm">منذ يومين</span></div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sec-hd"><span class="sec-title">تصفح حسب التصنيف</span></div>
+          <div class="cat-grid">
+            <div class="cat-card" onclick="doSearch('قانون العمل')"><div class="cat-icon">👷</div><div class="cat-name">قانون العمل</div><div class="cat-n">٣٨٧ نص</div></div>
+            <div class="cat-card" onclick="doSearch('القانون التجاري')"><div class="cat-icon">🏢</div><div class="cat-name">القانون التجاري</div><div class="cat-n">٥٦٢ نص</div></div>
+            <div class="cat-card" onclick="doSearch('القانون المدني')"><div class="cat-icon">⚖️</div><div class="cat-name">القانون المدني</div><div class="cat-n">٤٤١ نص</div></div>
+            <div class="cat-card" onclick="doSearch('قانون الشركات')"><div class="cat-icon">📊</div><div class="cat-name">قانون الشركات</div><div class="cat-n">٢٩٨ نص</div></div>
+            <div class="cat-card" onclick="doSearch('قانون الإيجار')"><div class="cat-icon">🏠</div><div class="cat-name">العقارات والإيجار</div><div class="cat-n">١٧٤ نص</div></div>
+            <div class="cat-card" onclick="doSearch('قانون الجزاء')"><div class="cat-icon">🔒</div><div class="cat-name">قانون الجزاء</div><div class="cat-n">٣٢٢ نص</div></div>
+            <div class="cat-card" onclick="doSearch('إجراءات التقاضي')"><div class="cat-icon">📋</div><div class="cat-name">الإجراءات المدنية</div><div class="cat-n">٢١٩ نص</div></div>
+            <div class="cat-card" onclick="doSearch('اللوائح والأنظمة')"><div class="cat-icon">📜</div><div class="cat-name">الأنظمة واللوائح</div><div class="cat-n">٤٣٨ نص</div></div>
+          </div>
+        </div>
+      </div><!-- /s-initial -->
+
+      <!-- Loading -->
+      <div id="search-loading" class="main-padded">
+        <div class="load-anim" style="margin-top:60px;">⚖️</div>
+        <p style="color:var(--text-dim);margin-top:16px;font-size:13px;text-align:center;">يبحث ميزان في المكتبة القانونية العُمانية…</p>
+        <div class="load-steps">
+          <div class="ls" id="ls1">◦ قانون العمل والمراسيم</div>
+          <div class="ls" id="ls2">◦ القانون التجاري والشركات</div>
+          <div class="ls" id="ls3">◦ القانون المدني والإجراءات</div>
+          <div class="ls" id="ls4">◦ تجميع النتائج وترتيبها…</div>
+        </div>
+      </div>
+
+      <!-- RESULTS — Split Screen -->
+      <div id="search-results" class="split-layout" style="display:none;">
+
+        <!-- RIGHT 35%: AI Refinement Agent -->
+        <div class="agent-pane">
+          <div class="agent-pane-header">
+            <div class="agent-avatar">⚖️</div>
+            <div>
+              <div class="agent-title">مساعد البحث</div>
+              <div class="agent-sub">يمكنني تضييق النتائج أو التوسّع</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="search-chat">
+            <div class="msg ai">
+              <div class="msg-icon ai">⚖️</div>
+              <div class="msg-bubble">وجدتُ <b>٧ نتائج</b> ذات صلة بـ "<span id="chat-q-display"></span>". هل تريد التعمّق في جانب معين؟
+                <div class="quick-choices" style="margin-top:10px;">
+                  <span class="qc" onclick="sendRefine(this,'التعويض المالي فقط')">التعويض المالي فقط</span>
+                  <span class="qc" onclick="sendRefine(this,'حالة إنهاء غير مبرر')">إنهاء غير مبرر</span>
+                  <span class="qc" onclick="sendRefine(this,'عقود محددة المدة')">عقود محددة المدة</span>
+                  <span class="qc" onclick="sendRefine(this,'إضافة أحكام قضائية')">أضف أحكاماً قضائية</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="agent-input">
+            <div style="font-size:10.5px;color:var(--text-muted);margin-bottom:7px;">اسأل أو وضّح لتحسين النتائج</div>
+            <div class="agent-input-row">
+              <textarea id="search-refine-input" placeholder="مثال: ما الفرق بين العقد محدد المدة وغير المحدد في هذا السياق؟…" rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendSearchMsg();}"></textarea>
+              <button class="send-btn" onclick="sendSearchMsg()">←</button>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:6px;">
+              <button class="btn" style="flex:1;" onclick="goTab(document.querySelector('[data-tab=draft]'));setTimeout(()=>toast('✏️ تم فتح معالج الصياغة'),100)">📝 صياغة بناءً على هذا</button>
+              <button class="btn" onclick="toast('✅ تم حفظ نتائج البحث')">💾 حفظ</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEFT 65%: Results -->
+        <div class="content-pane">
+          <div class="content-toolbar">
+            <span class="content-toolbar-title">نتائج: "<span id="results-q"></span>" · <b style="color:var(--gold)">٧ نتائج</b></span>
+            <button class="btn ghost" onclick="backToSearch()">← بحث جديد</button>
+          </div>
+          <div class="content-scroll">
+            <div class="filter-row">
+              <span class="ftab active" onclick="setFtab(this)">الكل</span>
+              <span class="ftab" onclick="setFtab(this)">قوانين</span>
+              <span class="ftab" onclick="setFtab(this)">لوائح تنفيذية</span>
+              <span class="ftab" onclick="setFtab(this)">مراسيم سلطانية</span>
+              <span class="ftab" onclick="setFtab(this)">أحكام قضائية</span>
+            </div>
+            <div class="ai-card">
+              <div class="ai-hd"><span class="ai-tag">AI ملخص</span><span class="ai-title">استناداً إلى ٧ مصادر قانونية</span></div>
+              <div class="ai-body">بموجب قانون العمل العُماني (م.س. ٣٥/٢٠٠٣) يلتزم صاحب العمل بصرف الأجر وفق المادة ١٢، وتوفير بيئة آمنة وفق المادة ٨٧. في حالة الفصل التعسفي يستحق العامل تعويضاً بحد أقصى ثلاثة أشهر لكل سنة خدمة وفق المادة ٤٤، إضافةً إلى مكافأة نهاية الخدمة.</div>
+              <div class="ai-refs"><span class="ai-ref">[١] م.١٢</span><span class="ai-ref">[٢] م.٣٩</span><span class="ai-ref">[٣] م.٤٤</span><span class="ai-ref">[٤] م.٨٧</span></div>
+            </div>
+            <div class="res-card">
+              <div class="res-hd"><div><div class="res-src">قانون العمل العُماني · م.س. ٣٥/٢٠٠٣</div><div class="res-art">المادة ١٢ — التزامات صاحب العمل</div></div><span class="sbadge ok">✓ نافذ</span></div>
+              <div class="res-body">يلتزم صاحب العمل بصرف <mark>أجر العامل</mark> في المواعيد المقررة ولا يجوز اقتطاع أي جزء منه إلا في الحالات التي ينص عليها القانون…</div>
+              <div class="res-acts"><button class="btn" onclick="toast('✅ محفوظ')">حفظ</button><button class="btn" onclick="toast('📋 تم النسخ')">نسخ</button><button class="btn primary" onclick="goTab(document.querySelector('[data-tab=draft]'))">صياغة ←</button></div>
+              <div class="rel-bar"><div class="rel-fill" style="width:96%"></div></div>
+            </div>
+            <div class="res-card">
+              <div class="res-hd"><div><div class="res-src">قانون العمل العُماني · م.س. ٣٥/٢٠٠٣</div><div class="res-art">المادة ٤٤ — التعويض عن إنهاء الخدمة</div></div><span class="sbadge ok">✓ نافذ</span></div>
+              <div class="res-body">إذا أنهى صاحب العمل عقد العمل دون مسوّغ مشروع، استحق <mark>العامل تعويضاً</mark> لا يقل عن أجر شهر عن كل سنة خدمة بحد أقصى ثلاثة أشهر لكل سنة…</div>
+              <div class="res-acts"><button class="btn" onclick="toast('✅ محفوظ')">حفظ</button><button class="btn" onclick="toast('📋 تم النسخ')">نسخ</button><button class="btn primary" onclick="goTab(document.querySelector('[data-tab=draft]'))">صياغة ←</button></div>
+              <div class="rel-bar"><div class="rel-fill" style="width:89%"></div></div>
+            </div>
+            <div class="res-card">
+              <div class="res-hd"><div><div class="res-src">اللائحة التنفيذية لقانون العمل · ق.و. ١٤/٢٠٠٨</div><div class="res-art">المادة ٥ — ساعات العمل والإجازات</div></div><span class="sbadge warn">⚠ تحت التحديث</span></div>
+              <div class="res-body">تُحدَّد <mark>ساعات العمل</mark> بتسع ساعات يومياً ولا تزيد على ٤٥ ساعة أسبوعياً، وست ساعات يومياً في رمضان. يستحق العامل إجازة سنوية لا تقل عن ٣٠ يوماً…</div>
+              <div class="res-acts"><button class="btn" onclick="toast('✅ محفوظ')">حفظ</button><button class="btn" onclick="toast('📋 تم النسخ')">نسخ</button><button class="btn primary" onclick="goTab(document.querySelector('[data-tab=draft]'))">صياغة ←</button></div>
+              <div class="rel-bar"><div class="rel-fill" style="width:74%"></div></div>
+            </div>
+            <div style="text-align:center;margin-top:16px;"><button class="btn" style="padding:9px 26px;">تحميل ٤ نتائج إضافية</button></div>
+          </div>
+        </div>
+
+      </div><!-- /search-results split -->
+    </div><!-- /tab-search -->
+
+    <!-- ══════════════════════
+         DRAFTING TAB — Split Screen
+    ══════════════════════ -->
+    <div id="tab-draft" class="tab">
+      <div class="split-layout">
+
+        <!-- RIGHT 35%: Conversational Wizard -->
+        <div class="agent-pane">
+          <div class="agent-pane-header">
+            <div class="agent-avatar">✍️</div>
+            <div>
+              <div class="agent-title">مساعد الصياغة</div>
+              <div class="agent-sub" id="draft-agent-sub">أجب على أسئلتي لتوليد المسوّدة</div>
+            </div>
+          </div>
+
+          <!-- Step progress -->
+          <div class="step-progress">
+            <div class="step-labels">
+              <span class="step-lbl done" id="sl0">النوع</span>
+              <span class="step-lbl now" id="sl1">الأطراف</span>
+              <span class="step-lbl" id="sl2">التفاصيل</span>
+              <span class="step-lbl" id="sl3">التحقق</span>
+              <span class="step-lbl" id="sl4">التوليد</span>
+            </div>
+            <div class="step-bar"><div class="step-bar-fill" id="step-fill" style="width:20%"></div></div>
+          </div>
+
+          <!-- Chat messages -->
+          <div class="chat-messages" id="draft-chat">
+
+            <!-- AI message 1: doc type selected -->
+            <div class="msg ai">
+              <div class="msg-icon ai">✍️</div>
+              <div class="msg-bubble">
+                ممتاز! سأصيغ لك <b>عقد عمل</b> متوافقاً مع قانون العمل العُماني. لنبدأ بالأطراف — من هو صاحب العمل؟
+              </div>
+            </div>
+            <!-- User answer -->
+            <div class="msg user">
+              <div class="msg-bubble">شركة الرواد للتجارة م.م.م</div>
+              <div class="msg-icon user">أح</div>
+            </div>
+            <!-- AI message 2 -->
+            <div class="msg ai">
+              <div class="msg-icon ai">✍️</div>
+              <div class="msg-bubble">تم تسجيل <b>صاحب العمل</b> ✓<br>وما اسم الموظف؟</div>
+            </div>
+            <!-- Current active question -->
+            <div class="msg ai" id="current-question">
+              <div class="msg-icon ai">✍️</div>
+              <div class="msg-bubble" id="current-q-bubble">
+                الاسم الكامل للموظف؟
+              </div>
+            </div>
+
+          </div><!-- /draft-chat -->
+
+          <!-- Doc type chooser (initial state) -->
+          <div id="doc-type-chooser" style="display:none;padding:14px 18px;border-bottom:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">اختر نوع الوثيقة</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div class="tone-opt sel" onclick="selDocType(this,'عقد عمل')"><span class="tone-name">👷 عقد العمل</span></div>
+              <div class="tone-opt" onclick="selDocType(this,'عقد شراكة')"><span class="tone-name">🤝 شراكة تجارية</span></div>
+              <div class="tone-opt" onclick="selDocType(this,'عقد إيجار')"><span class="tone-name">🏠 عقد إيجار</span></div>
+              <div class="tone-opt" onclick="selDocType(this,'إنذار عدلي')"><span class="tone-name">⚖️ إنذار عدلي</span></div>
+              <div class="tone-opt" onclick="selDocType(this,'صحيفة دعوى')"><span class="tone-name">📋 صحيفة دعوى</span></div>
+              <div class="tone-opt" onclick="selDocType(this,'اتفاقية NDA')"><span class="tone-name">🔒 اتفاقية NDA</span></div>
+            </div>
+          </div>
+
+          <!-- Tone selector (shows before generation) -->
+          <div id="tone-section" style="display:none;padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">اختر أسلوب المستند</div>
+            <div class="tone-selector">
+              <div class="tone-opt sel" onclick="selTone(this)">
+                <span class="tone-name">⚡ حازم ومباشر</span>
+                <span class="tone-desc">مناسب للإنذارات والمطالبات القضائية</span>
+              </div>
+              <div class="tone-opt" onclick="selTone(this)">
+                <span class="tone-name">🤝 ودي / تسوية</span>
+                <span class="tone-desc">مناسب للتفاوض وإنهاء النزاعات وديًا</span>
+              </div>
+              <div class="tone-opt" onclick="selTone(this)">
+                <span class="tone-name">📚 أكاديمي / مفصّل</span>
+                <span class="tone-desc">مشبع بالأسانيد والمراجع القانونية</span>
+              </div>
+            </div>
+            <button class="btn-gold" style="margin-top:12px;" onclick="generateDoc()">⚡ توليد المسودة الآن</button>
+          </div>
+
+          <!-- Input area -->
+          <div class="agent-input" id="draft-input-area">
+            <div class="agent-input-row">
+              <textarea id="draft-answer" placeholder="اكتب إجابتك هنا… أو اضغط Enter للإرسال" rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendDraftAnswer();}"></textarea>
+              <button class="send-btn" onclick="sendDraftAnswer()">←</button>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              <button class="btn" style="flex:1;" onclick="skipQuestion()">تخطّي هذا السؤال</button>
+            </div>
+          </div>
+        </div><!-- /agent-pane -->
+
+        <!-- LEFT 65%: Document Editor -->
+        <div class="content-pane">
+          <div class="content-toolbar">
+            <span class="content-toolbar-title" id="doc-toolbar-title">📄 عقد_العمل_مسودة.docx</span>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <span id="doc-status" style="font-size:11px;color:var(--warn);background:var(--warn-bg);border:1px solid rgba(184,118,15,.3);border-radius:4px;padding:2px 8px;">متغيرات ناقصة</span>
+              <button class="btn" onclick="toast('✅ تم الحفظ')">💾 حفظ</button>
+              <button class="btn primary" onclick="openModal('export-modal')">تصدير ↓</button>
+            </div>
+          </div>
+
+          <!-- Doc content -->
+          <div class="content-scroll" id="doc-scroll">
+
+            <!-- Placeholder before generation -->
+            <div id="doc-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;color:var(--text-muted);text-align:center;">
+              <div style="font-size:48px;margin-bottom:14px;opacity:.4;">📄</div>
+              <div style="font-size:14px;margin-bottom:6px;">ستظهر مسوّدتك هنا</div>
+              <div style="font-size:12px;">أجب على أسئلة المساعد في اليمين لتوليد المستند</div>
+            </div>
+
+            <!-- Generated document (initially hidden) -->
+            <div id="doc-content" style="display:none;">
+              <!-- Time saved notice -->
+              <div style="background:var(--ok-bg);border:1px solid rgba(42,128,85,.3);border-radius:var(--r-sm);padding:10px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:#5dc995;">
+                <span style="font-size:18px;">⚡</span>
+                <span>المسوّدة جاهزة في <b style="color:#fff;">٥ ثوانٍ</b> · وفّرت <b style="color:#fff;">٤٥ دقيقة</b> · راجع المتغيرات الذهبية وانقر لتعبئتها</span>
+              </div>
+
+              <div class="doc-body">
+                <div class="doc-main-title">عـقـد عـمـل</div>
+                <div class="doc-main-sub">محرَّر وفق أحكام قانون العمل العُماني الصادر بالمرسوم السلطاني رقم ٣٥/٢٠٠٣ وتعديلاته</div>
+
+                <div class="doc-sec">أولاً: أطراف العقد</div>
+                <div class="doc-p">
+                  تم إبرام هذا العقد بين <b>شركة الرواد للتجارة م.م.م</b> (فيما يلي «صاحب العمل»)، والسيد
+                  <span class="var-tag" data-var="اسم الموظف" onclick="openVarModal(this)">[اسم الموظف ؟]</span>
+                  (فيما يلي «الموظف»)، في سلطنة عُمان بتاريخ
+                  <span class="var-tag" data-var="تاريخ الإبرام" onclick="openVarModal(this)">[تاريخ الإبرام ؟]</span>.
+                </div>
+
+                <div class="doc-sec">ثانياً: المسمى الوظيفي ومكان العمل</div>
+                <div class="doc-p">
+                  يُوظَّف الموظف بمسمى
+                  <span class="var-tag" data-var="المسمى الوظيفي" onclick="openVarModal(this)">[المسمى الوظيفي ؟]</span>،
+                  ويكون مقر عمله في <b>مسقط، سلطنة عُمان</b>، ما لم يُتفق على خلاف ذلك كتابةً.
+                </div>
+
+                <div class="doc-sec">ثالثاً: مدة العقد</div>
+                <div class="doc-p">
+                  يُبرَم هذا العقد لمدة
+                  <span class="var-tag filled" data-var="مدة العقد">غير محددة</span>
+                  وفق المادة ٧ من قانون العمل العُماني، ويبدأ سريانه من تاريخ مباشرة الموظف لعمله فعلياً.
+                </div>
+
+                <div class="doc-sec">رابعاً: الأجر والمزايا</div>
+                <div class="doc-p">
+                  يتقاضى الموظف راتباً أساسياً شهرياً قدره
+                  <span class="var-tag" data-var="الراتب الأساسي" onclick="openVarModal(this)">[الراتب الأساسي ؟]</span>
+                  ريالاً عُمانياً، يُصرف في موعد أقصاه اليوم السابع من الشهر التالي وفق المادة ٣٩ من القانون.
+                  يستحق الموظف بدل سكن قدره
+                  <span class="var-tag" data-var="بدل السكن" onclick="openVarModal(this)">[بدل السكن ؟]</span>
+                  ريالاً عُمانياً شهرياً.
+                </div>
+
+                <div class="doc-sec">خامساً: ساعات العمل والإجازات</div>
+                <div class="doc-p">
+                  تُحدَّد ساعات العمل بـ <b>٤٥ ساعة أسبوعياً</b> وفق اللائحة التنفيذية لقانون العمل. يستحق الموظف إجازة سنوية مدفوعة لا تقل عن <b>٣٠ يوماً</b> بعد سنة خدمة كاملة.
+                </div>
+
+                <div class="doc-sec">سادساً: إنهاء العقد</div>
+                <div class="doc-p">
+                  عند إنهاء هذا العقد، يستحق الموظف مكافأة نهاية الخدمة ومستحقاته وفق أحكام المواد ٣٩ و٤٤ و٤٧ من قانون العمل العُماني النافذ. في حالة الفسخ التعسفي يحق للموظف التعويض وفق المادة ٤٤.
+                </div>
+
+                <div style="margin-top:32px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);">
+                  <div>توقيع صاحب العمل: ______________</div>
+                  <div>توقيع الموظف: ______________</div>
+                </div>
+              </div>
+
+              <!-- Sources -->
+              <div style="margin:0 40px 28px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);">
+                <div style="font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:10px;">📚 المصادر القانونية المُستخدَمة</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <span class="ai-ref">م.س. ٣٥/٢٠٠٣ · م.٧</span>
+                  <span class="ai-ref">م.س. ٣٥/٢٠٠٣ · م.٣٩</span>
+                  <span class="ai-ref">م.س. ٣٥/٢٠٠٣ · م.٤٤</span>
+                  <span class="ai-ref">م.س. ٣٥/٢٠٠٣ · م.٤٧</span>
+                  <span class="ai-ref">ق.و. ١٤/٢٠٠٨ · م.٥</span>
+                </div>
+                <div style="margin-top:10px;font-size:11px;color:#5dc995;">✓ ٥ مواد قانونية نافذة مُراجَعة · مطابق لـ PDPL 2022</div>
+              </div>
+            </div><!-- /doc-content -->
+          </div><!-- /content-scroll -->
+
+          <!-- Quick actions bar (shows after generation) -->
+          <div class="quick-actions" id="quick-actions" style="display:none;">
+            <span style="font-size:11px;color:var(--text-muted);margin-left:6px;align-self:center;">إجراءات سريعة:</span>
+            <button class="qa-btn" onclick="toast('🔄 جارٍ إعادة الصياغة…')">🔄 أعد الصياغة بلغة قانونية</button>
+            <button class="qa-btn" onclick="toast('✂️ جارٍ الاختصار…')">✂️ اختصر هذه الفقرة</button>
+            <button class="qa-btn" onclick="toast('🔍 جارٍ البحث عن سند قانوني…')">🔍 ابحث عن سند قانوني</button>
+            <button class="qa-btn" onclick="toast('⚠️ جارٍ تحليل المخاطر…')">⚠️ تحليل المخاطر</button>
+            <button class="qa-btn" onclick="toast('✏️ جارٍ تعبئة المتغيرات الناقصة…')">✏️ تعبئة الناقص</button>
+          </div>
+        </div><!-- /content-pane -->
+
+      </div><!-- /split-layout draft -->
+    </div><!-- /tab-draft -->
+
+    <!-- ══════════════════════
+         FILES TAB
+    ══════════════════════ -->
+    <div id="tab-files" class="tab">
+      <div class="main-padded">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div><div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">ملفاتي المحفوظة</div><div style="font-size:12.5px;color:var(--text-dim);">٢٣ بحث محفوظ · ١٢ وثيقة مسوَّدة</div></div>
+          <button class="btn">+ ملف جديد</button>
+        </div>
+        <div class="files-grid">
+          <div class="file-card"><div class="file-icon">📄</div><div class="file-name">عقد عمل — أحمد البلوشي</div><div class="file-meta">اليوم ٢:٤٧ م</div><span class="fbadge draft">وثيقة مسوَّدة</span></div>
+          <div class="file-card"><div class="file-icon">🔍</div><div class="file-name">بحث: التزامات صاحب العمل</div><div class="file-meta">٧ نتائج · منذ ساعتين</div><span class="fbadge search">بحث محفوظ</span></div>
+          <div class="file-card"><div class="file-icon">📄</div><div class="file-name">اتفاقية NDA — مشروع التقنية</div><div class="file-meta">أمس ١٠:٢٠ ص</div><span class="fbadge draft">وثيقة مسوَّدة</span></div>
+          <div class="file-card"><div class="file-icon">🔍</div><div class="file-name">بحث: التحكيم التجاري</div><div class="file-meta">٥ نتائج · يومين</div><span class="fbadge search">بحث محفوظ</span></div>
+          <div class="file-card"><div class="file-icon">📄</div><div class="file-name">عقد شراكة — الحارثي والبوسعيدي</div><div class="file-meta">١٢ يوليو</div><span class="fbadge draft">وثيقة مسوَّدة</span></div>
+          <div class="file-card"><div class="file-icon">🔍</div><div class="file-name">بحث: تسجيل الشركات</div><div class="file-meta">٩ نتائج · ١١ يوليو</div><span class="fbadge search">بحث محفوظ</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════
+         CASES TAB
+    ══════════════════════ -->
+    <div id="tab-cases" class="tab">
+      <div class="main-padded">
+        <div style="margin-bottom:20px;"><div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">قضاياي النشطة</div><div style="font-size:12.5px;color:var(--text-dim);">٦ قضايا · ٢ جلسات هذا الأسبوع</div></div>
+        <div class="case-card"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><div><div class="case-name">نزاع تجاري — الشركة الخليجية ضد مورِّدها</div><div class="case-info">٢٠٢٦/٤٤٢ · محكمة الاستئناف التجارية · مسقط</div></div><span class="sbadge ok">نشطة</span></div><div class="case-acts"><button class="btn">عرض الملف</button><button class="btn">بحث في القضية</button><button class="btn primary">إعداد لائحة الجلسة ←</button></div><div class="case-meta"><span>الجلسة: <b>٢١ يوليو ٢٠٢٦</b></span><span>الوثائق: <b>١٢</b></span><span>آخر تحديث: <b>اليوم</b></span></div></div>
+        <div class="case-card"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><div><div class="case-name">نزاع عمالي — الموظف أحمد ضد شركة الرواد</div><div class="case-info">٢٠٢٦/٣١٧ · المحكمة الابتدائية · صحار</div></div><span class="sbadge warn">تحضير</span></div><div class="case-acts"><button class="btn">عرض الملف</button><button class="btn">بحث في القضية</button><button class="btn primary">إعداد لائحة الجلسة ←</button></div><div class="case-meta"><span>الجلسة: <b>٢٨ يوليو ٢٠٢٦</b></span><span>الوثائق: <b>٨</b></span><span>آخر تحديث: <b>أمس</b></span></div></div>
+      </div>
+    </div>
+
+    <!-- COMING SOON tabs -->
+    <div id="tab-analyze" class="tab"><div class="main-padded"><div class="soon"><div class="si">🔬</div><h3>تحليل العقود</h3><p>ارفع عقدك وسيحلل ميزان البنود، يُحدد المخاطر، ويقترح التعديلات وفق القانون العُماني</p><button class="btn" onclick="toast('📧 سيتم إشعارك')">أشعرني عند الإطلاق</button></div></div></div>
+    <div id="tab-deadlines" class="tab"><div class="main-padded"><div class="soon"><div class="si">📅</div><h3>مواعيد التقاضي</h3><p>تتبع مواعيد الجلسات مع تذكيرات تلقائية قبل ٧٢ ساعة</p><button class="btn" onclick="toast('📧 سيتم إشعارك')">أشعرني عند الإطلاق</button></div></div></div>
+    <div id="tab-settings" class="tab">
+      <div class="main-padded">
+        <div style="max-width:520px;">
+          <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:18px;">إعدادات الحساب</div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:14px;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:16px;">المعلومات الشخصية</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+              <div class="ff"><label>الاسم الكامل</label><input type="text" value="أحمد بن سالم البلوشي"></div>
+              <div class="ff"><label>البريد الإلكتروني</label><input type="email" value="ahmed@lawfirm.om" dir="ltr"></div>
+            </div>
+            <div class="ff"><label>اسم المكتب</label><input type="text" value="مكتب البلوشي للمحاماة والاستشارات"></div>
+            <button class="btn primary" style="margin-top:8px;" onclick="toast('✅ تم حفظ التغييرات')">حفظ التغييرات</button>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">الأمان والخصوصية</div>
+            <div style="font-size:12px;color:var(--text-dim);line-height:2.2;">✅ بياناتك محفوظة داخل السحابة العُمانية (Otech)<br>✅ تشفير AES-256<br>✅ متوافق مع PDPL 2022<br>✅ لا تُشارَك بياناتك مع أي جهة</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app-screen -->
+
+<script>
+// ─── Globals ────────────────────────────────
+let currentVarEl = null;
+let draftStep = 1;
+const draftQuestions = [
+  'اسم الموظف الكامل؟',
+  'ما المسمى الوظيفي؟',
+  'ما الراتب الأساسي (ريال عُماني)؟',
+  'ما بدل السكن الشهري (ريال عُماني)؟ — اكتب ٠ إن لم يوجد',
+];
+
+// ─── Login ───────────────────────────────────
+function goApp(){
+  document.getElementById('login-screen').classList.remove('active');
+  document.getElementById('app-screen').classList.add('active');
+}
+
+// ─── Tabs ─────────────────────────────────────
+function goTab(el){
+  const tab = typeof el==='string' ? el : el.dataset.tab;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const navEl = document.querySelector(`[data-tab="${tab}"]`);
+  if(navEl) navEl.classList.add('active');
+  const tabEl = document.getElementById('tab-'+tab);
+  if(tabEl) tabEl.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ─── Search ───────────────────────────────────
+let searchTimer;
+function doSearch(q){
+  q=(q||'').trim();
+  if(!q) return;
+  document.getElementById('tb-input').value=q;
+  document.getElementById('hero-input').value=q;
+  document.getElementById('results-q').textContent=q;
+  document.getElementById('chat-q-display').textContent=q;
+  goTab('search');
+  // show loading
+  document.getElementById('s-initial').style.display='none';
+  document.getElementById('search-loading').style.display='block';
+  document.getElementById('search-results').style.display='none';
+  // animate steps
+  const ids=['ls1','ls2','ls3','ls4'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el){el.className='ls';el.textContent={'ls1':'◦ قانون العمل والمراسيم','ls2':'◦ القانون التجاري والشركات','ls3':'◦ القانون المدني والإجراءات','ls4':'◦ تجميع النتائج وترتيبها…'}[id];}});
+  let i=0;
+  function step(){
+    if(i<ids.length){
+      const el=document.getElementById(ids[i]);
+      if(i>0){const prev=document.getElementById(ids[i-1]);if(prev){prev.className='ls done';prev.textContent='✓ '+prev.textContent.slice(2);}}
+      if(el){el.className='ls now';el.textContent='◉ '+el.textContent.slice(2);}
+      i++;searchTimer=setTimeout(step,300);
+    } else {
+      setTimeout(()=>{
+        document.getElementById('search-loading').style.display='none';
+        document.getElementById('search-results').style.display='grid';
+      },300);
+    }
+  }
+  clearTimeout(searchTimer);
+  setTimeout(step,100);
+}
+
+function backToSearch(){
+  document.getElementById('search-results').style.display='none';
+  document.getElementById('search-loading').style.display='none';
+  document.getElementById('s-initial').style.display='block';
+  document.getElementById('tb-input').value='';
+}
+
+function setFtab(el){
+  document.querySelectorAll('.ftab').forEach(f=>f.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ─── Search agent chat ──────────────────────
+function sendRefine(el, text){
+  document.querySelectorAll('.qc').forEach(q=>q.classList.remove('sel'));
+  el.classList.add('sel');
+  addSearchMsg('user', text);
+  setTimeout(()=>addSearchMsg('ai','جارٍ تضييق النتائج حول "'+text+'"…<br><br>✓ تم تحديث ٧ نتائج بناءً على اختيارك.'),600);
+}
+
+function sendSearchMsg(){
+  const input=document.getElementById('search-refine-input');
+  const txt=(input.value||'').trim();
+  if(!txt) return;
+  input.value='';
+  addSearchMsg('user',txt);
+  setTimeout(()=>addSearchMsg('ai','بحثت في النصوص المتعلقة بسؤالك… إليك ما وجدته في <b>المادة ٤٤</b> و<b>المادة ٤٧</b> من قانون العمل العُماني. هل تريد صياغة وثيقة استناداً لهذه المواد؟'),800);
+}
+
+function addSearchMsg(role, html){
+  const chat=document.getElementById('search-chat');
+  const div=document.createElement('div');
+  div.className='msg '+role;
+  div.innerHTML=role==='ai'
+    ?`<div class="msg-icon ai">⚖️</div><div class="msg-bubble">${html}</div>`
+    :`<div class="msg-bubble">${html}</div><div class="msg-icon user">أح</div>`;
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+// ─── Draft wizard ──────────────────────────
+function sendDraftAnswer(){
+  const input=document.getElementById('draft-answer');
+  const txt=(input.value||'').trim();
+  if(!txt) return;
+  input.value='';
+  addDraftMsg('user',txt);
+  setTimeout(()=>advanceDraft(txt),400);
+}
+
+function skipQuestion(){
+  addDraftMsg('user','<span style="color:var(--text-muted)">— تم التخطّي</span>');
+  setTimeout(()=>advanceDraft(null),300);
+}
+
+function addDraftMsg(role,html){
+  const chat=document.getElementById('draft-chat');
+  // remove current-question indicator
+  const cq=document.getElementById('current-question');
+  if(cq) cq.removeAttribute('id');
+  const div=document.createElement('div');
+  div.className='msg '+role;
+  div.innerHTML=role==='ai'
+    ?`<div class="msg-icon ai">✍️</div><div class="msg-bubble">${html}</div>`
+    :`<div class="msg-bubble">${html}</div><div class="msg-icon user">أح</div>`;
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function advanceDraft(answer){
+  draftStep++;
+  const pct=[0,20,40,60,80,100][Math.min(draftStep,5)];
+  document.getElementById('step-fill').style.width=pct+'%';
+
+  // Update step labels
+  const labels=['sl0','sl1','sl2','sl3','sl4'];
+  const stepMap={1:'sl1',2:'sl2',3:'sl3',4:'sl4'};
+  labels.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const idx=parseInt(id.replace('sl',''));
+    if(idx<draftStep) el.className='step-lbl done';
+    else if(idx===draftStep) el.className='step-lbl now';
+    else el.className='step-lbl';
+  });
+
+  if(draftStep < draftQuestions.length+1){
+    const q=draftQuestions[draftStep-1];
+    // add new AI question
+    const chat=document.getElementById('draft-chat');
+    const div=document.createElement('div');
+    div.className='msg ai';
+    div.id='current-question';
+    div.innerHTML=`<div class="msg-icon ai">✍️</div><div class="msg-bubble" id="current-q-bubble">${q}</div>`;
+    chat.appendChild(div);
+    chat.scrollTop=chat.scrollHeight;
+  } else if(draftStep===draftQuestions.length+1){
+    // show tone selector
+    addDraftMsg('ai','ممتاز! جمعتُ كل التفاصيل. اختر الآن أسلوب المستند قبل التوليد:');
+    document.getElementById('draft-input-area').style.display='none';
+    document.getElementById('tone-section').style.display='block';
+    document.getElementById('draft-agent-sub').textContent='اختر أسلوب المستند';
+  }
+}
+
+function selTone(el){
+  document.querySelectorAll('.tone-opt').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function selDocType(el, type){
+  document.querySelectorAll('#doc-type-chooser .tone-opt').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('doc-toolbar-title').textContent='📄 '+type+'_مسودة.docx';
+}
+
+function generateDoc(){
+  document.getElementById('tone-section').style.display='none';
+  document.getElementById('draft-agent-sub').textContent='المسوّدة جاهزة للمراجعة';
+
+  addDraftMsg('ai','⚡ المسوّدة جاهزة! راجعها في المحرر على اليسار، وانقر على المتغيرات الذهبية لتعبئتها، أو اسألني لتعديل أي فقرة.');
+
+  // Show document
+  document.getElementById('doc-placeholder').style.display='none';
+  document.getElementById('doc-content').style.display='block';
+  document.getElementById('quick-actions').style.display='flex';
+
+  // Update step to done
+  document.getElementById('step-fill').style.width='100%';
+  ['sl0','sl1','sl2','sl3','sl4'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.className='step-lbl done';
+  });
+
+  // Enable chat for post-generation
+  document.getElementById('draft-input-area').style.display='block';
+  document.getElementById('draft-answer').placeholder='اسأل لتعديل أي بند في العقد…';
+
+  toast('⚡ المسوّدة جاهزة! وفّرت ٤٥ دقيقة');
+}
+
+// ─── Variable tags ──────────────────────────
+function openVarModal(el){
+  currentVarEl=el;
+  document.getElementById('var-modal-label').textContent='أدخل قيمة «'+el.dataset.var+'»:';
+  document.getElementById('var-modal-input').value='';
+  document.getElementById('var-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('var-modal-input').focus(),100);
+}
+
+function fillVar(){
+  const val=document.getElementById('var-modal-input').value.trim();
+  if(val && currentVarEl){
+    currentVarEl.textContent=val;
+    currentVarEl.classList.add('filled');
+    currentVarEl.onclick=null;
+    // check if all vars filled
+    const remaining=document.querySelectorAll('.var-tag:not(.filled)').length;
+    if(remaining===0){
+      document.getElementById('doc-status').textContent='المستند مكتمل ✓';
+      document.getElementById('doc-status').style.color='var(--ok)';
+      document.getElementById('doc-status').style.background='var(--ok-bg)';
+    } else {
+      document.getElementById('doc-status').textContent=remaining+' متغيرات ناقصة';
+    }
+  }
+  closeModal('var-modal');
+}
+
+// ─── Modals ──────────────────────────────────
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function selExport(el){
+  document.querySelectorAll('.export-option').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+const cbState={};
+function toggleCb(id){
+  cbState[id]=!cbState[id];
+  document.getElementById(id).textContent=cbState[id]?'✓':'';
+}
+
+// ─── Toast ───────────────────────────────────
+let toastTimer;
+window.toast=function(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3200);
+};
+</script>
+</body>
+</html>

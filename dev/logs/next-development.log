@@ -1,0 +1,36 @@
+[00:00:08.694] Server  LOG     ✓ Ready in 6.4s
+[00:05:18.157] Server  LOG     ○ Compiling / ...
+[00:05:26.203] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[15:03:44.546] Server  LOG     ✓ Compiled in 23s
+[15:04:11.247] Server  LOG     ○ Compiling / ...
+[15:04:23.367] Server  LOG     ✓ Compiled in 6.8s
+[15:09:01.488] Server  LOG     ✓ Compiled in 431ms
+[15:10:01.254] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[15:27:47.338] Server  LOG     ✓ Compiled in 402ms
+[15:28:17.376] Server  LOG     ✓ Compiled in 292ms
+[15:28:48.551] Server  LOG     ✓ Compiled in 391ms
+[15:29:11.221] Server  LOG     ✓ Compiled in 365ms
+[15:29:21.320] Server  LOG     ✓ Compiled in 745ms
+[15:29:46.464] Server  LOG     ✓ Compiled in 6.3s
+[15:30:55.764] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[15:39:28.775] Server  LOG     ✓ Compiled in 686ms
+[15:40:01.400] Server  LOG     ✓ Compiled in 669ms
+[15:40:20.793] Server  LOG     ✓ Compiled in 172ms
+[15:47:54.174] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[15:49:00.703] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[15:49:02.547] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[15:49:03.238] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[15:49:03.453] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[15:49:08.959] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[15:54:09.746] Server  LOG     ✓ Compiled in 475ms
+[15:55:26.520] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[15:56:18.297] Server  LOG     ✓ Compiled in 827ms
+[15:56:31.310] Server  LOG     ✓ Compiled in 353ms
+[15:56:54.127] Server  LOG     ✓ Compiled in 4.4s
+[16:05:59.026] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[16:06:01.318] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[16:06:02.622] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[16:06:03.860] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[16:06:04.640] Browser ERROR   uncaughtError: NotFoundError: Failed to execute 'releasePointerCapture' on 'Element': No active pointer with the given id is found.
+[16:06:07.284] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[16:10:42.596] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
